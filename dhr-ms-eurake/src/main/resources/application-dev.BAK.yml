@@ -1,0 +1,42 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: dhr-ms-eurake
+  thymeleaf:
+    cache: false
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+  server:
+    enable-self-preservation: false
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    #开启DNS方式获取serviceUrl,默认为false
+    use-dns-for-fetching-service-urls: false
+    #当前应用所在区域,默认为us-east-1
+    region: region1
+    #获取serviceUrl时候是否优先获取相同zone的列表(如果获取为空则获取所在region第一个zone),如果为false则优先获取不在相同zone的列表
+    #client所在zone为availabilityZones的第一个zone,如果未配置,则为defaultZone
+    prefer-same-zone-eureka: true
+    #是否获取注册信息到本地
+    fetch-registry: true
+    #是否将自己注册到eureka
+#    register-with-eureka: true
+    #与DNS获取的方式相同,这里需要手工配置包含哪些region以及zone(Map类型),如果没有给相关的region配置zone,则默认返回defaultZone
+    availability-zones:
+       region1: zone1-1
+       region2: zone2-1
+    #与DNS获取数据方式类似,这里需要手工配置每个zone包含哪些URL,如果应用所在区域没有zone,则默认返回defaultZone的数据
+    service-url:
+       zone1-1: http://localhost:${server.port}/eureka/,http://localhost:${server.port}/eureka2/
+       zone2-1: http://localhost:${server.port}/eureka/,http://localhost:${server.port}/eureka2/
+
+    # http://localhost:${server.port}/eureka/ 其中/eureka/目录固定不可修改，否则服务注册不了;可配置一个副本，如下逗号分隔
+    #当客户端在服务列表中选择实例进行访问时，对于Zone和Region遵循这样的规则：优先访问同自己一个Zone中的实例，其次才访问其他Zone中的实例。通过Region和Zone的两层级别定义，配合实际部署的物理结构，我们就可以有效的设计出区域性故障的容错集群。
+#      serviceUrl:
+#        defaultZone: http://localhost:${server.port}/eureka/,http://localhost:${server.port}/eureka2/
+

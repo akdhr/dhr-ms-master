@@ -1,0 +1,65 @@
+server:
+  port: 7003
+
+spring:
+  application:
+    name: upp-ms-query
+    index: 0
+  datasource:
+    name: upp
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://rds50jbyai03e06jgv0h.mysql.rds.aliyuncs.com:3306/pay_upp?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&autoReconnect=true&useUnicode=true
+    username: med2
+    password: yuntai11494
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp2:
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-wait-millis: 45000
+      log-abandoned: true
+      test-on-borrow: true
+      min-idle: 5
+      max-idle: 50
+      initial-size: 5
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-create: false
+      test-on-return: false
+      remove-abandoned-on-borrow: false
+      remove-abandoned-timeout: 1800
+
+mybatis:
+  mapperLocations: classpath:com/yuntai/upp/pay/orm/*.xml
+  typeAliasesPackage: com.yuntai.upp.pay.api.model
+  configuration:
+    map-underscore-to-camel-case: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+  instance:
+    prefer-ip-address: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+logging:
+  config: 'classpath:logger-server.xml'
+  path: /data/ftp/log
+  root: info
+  level:
+    org: off
+    com.netflix: error
+    com.alibaba: error
+    org.springframework.web.servlet.mvc.method.annotation: debug
+    com.yuntai.upp.pay: debug

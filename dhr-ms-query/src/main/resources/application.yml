@@ -1,0 +1,6 @@
+#############################
+#	settings for profile   	#
+#############################
+spring:
+  profiles:
+    active: dev

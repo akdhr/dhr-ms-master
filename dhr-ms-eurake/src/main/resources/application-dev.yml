@@ -1,0 +1,20 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: dhr-ms-eureka
+  thymeleaf:
+    cache: false
+
+eureka:
+  instance:
+    hostname: ${spring.application.name}
+  server:
+    enable-self-preservation: false
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/,http://localhost:${server.port}/eureka2/
+
